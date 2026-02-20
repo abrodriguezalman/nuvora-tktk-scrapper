@@ -21,7 +21,7 @@ To check your version, run the following on your local terminal:
 The following commands should be run in order on your local terminal:
 
 ### Clone the repository 1️⃣
-*git clone git@github.com:abrodriguezalman/nuvora-tktk-scrapper.git*\
+*git clone https://github.com/abrodriguezalman/nuvora-tktk-scrapper.git*\
 *cd nuvora-tktk-scrapper*
 
 ### Create a virtual environment (recommended) 2️⃣
