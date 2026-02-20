@@ -14,34 +14,36 @@ This program scrapes Tiktok video results from a given hashtag keyword using Pla
 * pip (comes with Python)
 
 To check your version, run the following on your local terminal: 
-$\color{blue}{python3 --version}$
+*python3 --version*
+
 
 ## Setup Instructions ⚙️
 The following commands should be run in order on your local terminal:
 
 ### Clone the repository 1️⃣
-$\color{blue}{git \space clone \space<your-repo-url>}$\
-$\color{blue}{cd \space<repo-name>}$
+*git clone git@github.com:abrodriguezalman/nuvora-tktk-scrapper.git*\
+*cd nuvora-tktk-scrapper*
 
 ### Create a virtual environment (recommended) 2️⃣
 Mac/Linux:\
-$\color{blue}{python3 \space -m \space venv \space venv}$\
-$\color{blue}{source \space venv/bin/activate}$
+*python3 -m venv venv*
+*source venv/bin/activate*
 
 Windows:\
-$\color{blue}{python \space -m \space venv \space venv}$\
-$\color{blue}{venv\Scripts\activate}$
+*python -m venv venv*
+*venv\Scripts\activate*
+
 
 ### Install dependencies 3️⃣
-$\color{blue}{pip \space install \space -r \space requirements.txt}$
+*pip install -r requirements.txt*
 
 ### Install Playwright browser binaries 4️⃣
 This step is required for the scraper to launch Chromium.\
-$\color{blue}{playwright \space install \space chromium}$
+playwright install chromium*
 
 ## Running the Program 🚀
 After setup, run the following line:
-$\color{blue}{python \space main.py}$
+*python main.py*
 
 You will be prompted to enter a hashtag keyword.
 
