@@ -39,7 +39,7 @@ Windows:\
 
 ### Install Playwright browser binaries 4️⃣
 This step is required for the scraper to launch Chromium.\
-playwright install chromium*
+*playwright install chromium*
 
 ## Running the Program 🚀
 After setup, run the following line:
