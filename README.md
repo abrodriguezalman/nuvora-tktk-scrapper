@@ -31,7 +31,7 @@ Mac/Linux:\
 
 Windows:\
 *python -m venv venv*
-*venv\Scripts\activate*
+*venv/Scripts/activate*
 
 
 ### Install dependencies 3️⃣
