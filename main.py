@@ -1,21 +1,21 @@
-from hash_scrapper import hashtag_search
+from keyword_scrapper import keyword_search
 
-hashtag = input("Enter search hashtag(s) (no #; if multiple, separate with ','):")
+keyword = input("Enter search words (if multiple, separate with ','):")
 entries = int(input("Enter number of desired results (no commas or decimals):"))
 
-if "," in hashtag:
-    hash_list = hashtag.split(",")
+if "," in keyword:
+    kword_list = keyword.split(",")
 
-    for h in hash_list:
+    for h in kword_list:
         try:
-            hashtag_search(h.lower().replace(" ",""), entries)
+            keyword_search(h.lower().strip().replace(" ","+"), entries)
         except Exception as e:
             print(f"\nUnexpected Error Occured: {e}")
         finally:
             print("Program finished.")
 else:
     try:
-        hashtag_search(hashtag.lower().replace(" ",""), entries)
+        keyword_search(keyword.lower().strip().replace(" ","+"), entries)
     except Exception as e:
         print(f"\nUnexpected Error Occured: {e}")
     finally:
