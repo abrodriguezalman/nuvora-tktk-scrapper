@@ -3,7 +3,7 @@ import random
 import time
 import csv
 
-def keyword_search(kword: str, num_entries: int):
+def keyword_search(mode: str, kword: str, num_entries: int):
     with sync_playwright() as p:
     #-- Set up new browser and page --
         browser = p.chromium.launch(headless=False, args=[
@@ -20,10 +20,16 @@ def keyword_search(kword: str, num_entries: int):
             });
             """)
 
-            page.goto(
-                f"https://urlebird.com/search/?q={kword}",
+            if mode == 'K':
+                page.goto(
+                    f"https://urlebird.com/search/?q={kword}",
+                    wait_until="domcontentloaded"
+                )
+            else:
+                page.goto(
+                f"https://urlebird.com/hash/{kword}/",
                 wait_until="domcontentloaded"
-            )
+                )
 
             try:
                 page.wait_for_selector("div.thumb.wc", timeout=5000)
@@ -104,6 +110,33 @@ def keyword_search(kword: str, num_entries: int):
                     caption = None
 
                 #-- Visit video to extract full caption TO DO--
+                if overlay_link is not None:
+                    video_page = None
+                    try:
+                        video_page = browser.new_page()
+
+                        try:
+                            video_page.goto(overlay_link, wait_until="domcontentloaded", timeout=10000)
+                        except Exception as e:
+                            print(f"video URL navigation failed: {e}")
+                            continue
+
+                        try:
+                            video_page.wait_for_selector("div.info2", timeout=8000)
+                            caption = video_page.locator("div.info2 h1").inner_text()
+                        except Exception as e:
+                            print(f"Could not scrape full caption, keeping partial. Reason: {e}")
+
+                    except Exception as e:
+                        print(f"Unexpected error opening video page: {e}")
+                    
+                    finally:
+                        if video_page:
+                            video_page.close()
+
+                        page.wait_for_timeout(random.randint(1000, 2500))
+                else:
+                    print("video URL failed, URL does not exist.")
                 
                 extracted_data.append({"video_url": overlay_link,
                     "username": username,
@@ -121,12 +154,12 @@ def keyword_search(kword: str, num_entries: int):
             print(f"Saving results to {kword}_videos.csv...")
             keys = extracted_data[0].keys()
 
-            with open(kword + "_videos.csv", "w", newline="", encoding="utf-8") as f:
+            with open(kword + "_videos_" + mode + "_mode.csv", "w", newline="", encoding="utf-8") as f:
                 dic_writer = csv.DictWriter(f, keys)
                 dic_writer.writeheader()
                 dic_writer.writerows(extracted_data)
 
-            print(f"Saved {len(extracted_data)} videos to {kword}_videos.csv.")
+            print(f"Saved {len(extracted_data)} videos to {kword}_videos_{mode}_mode.csv.")
             pass
         
         finally:
