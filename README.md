@@ -1,5 +1,5 @@
-# Hashtag Video Scraper 📊
-This program scrapes Tiktok video results from a given hashtag keyword using Playwright and outputs structured data for analysis.
+# Tiktok Video Scraper 📊
+This program scrapes Tiktok video engagement metrics from a given hashtag or keyword using Playwright and outputs structured data for analysis.
 
 ## Project Structure 📁
 .\
@@ -45,7 +45,7 @@ This step is required for the scraper to launch Chromium.\
 After setup, run the following line:
 *python main.py*
 
-You will be prompted to enter a hashtag keyword.
+You will be prompted to enter a mode of data collection via hashtag or keyword.
 
 The program will:
 * Launch Chromium
