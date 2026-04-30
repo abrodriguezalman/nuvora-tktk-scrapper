@@ -3,10 +3,11 @@ This program scrapes Tiktok video engagement metrics from a given hashtag or key
 
 ## Project Structure 📁
 .\
-├── main.py                  # Handles user input and runs the scraper\
-├── scrapper.py              # Core scraping logic\
+├── main.py                  # Handles user input and runs the keyword scraper\
+├── user_main.py                  # Handles user input and runs the user profile scraper\
+├── keyword_scrapper.py              # Keyword scraping logic\
+├── user_scrapper.py              # User profile scraping logic\
 ├── requirements.txt         # Project dependencies\
-├── .gitignore               # Excludes venv and unnecessary files\
 └── README.md                # This file
 
 ## Prerequisites ✅ 
@@ -15,7 +16,6 @@ This program scrapes Tiktok video engagement metrics from a given hashtag or key
 
 To check your version, run the following on your local terminal: 
 *python3 --version*
-
 
 ## Setup Instructions ⚙️
 The following commands should be run in order on your local terminal:
@@ -45,16 +45,21 @@ This step is required for the scraper to launch Chromium.\
 After setup, run the following line:
 *python main.py*
 
-You will be prompted to enter a mode of data collection via hashtag or keyword.
+You will be prompted to enter a mode of data collection via hashtag or keyword, as well as the desired number of entries.
+
+If you'd like to obtain user profile results only, run the following line:
+*python user_main.py*
+
+You will be prompted to enter a user or a list of users.
 
 The program will:
-* Launch Chromium
-* Scrape available video results
+* Launch an external Chromium window
+* Scrape available results
 * Return structured data
 * Exit cleanly (including if no results are found)
 
 ## Error Handling 🛑
-If a hashtag yields no results:
+If a keyword/user yields no results:
 * The program exits gracefully
 * A helpful message is displayed
 * The browser closes cleanly
