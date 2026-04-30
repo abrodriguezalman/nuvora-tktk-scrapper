@@ -1,9 +1,12 @@
 from playwright.sync_api import sync_playwright, TimeoutError
+from user_scrapper import bulk_user_search
 import random
 import time
+import pandas as pd
 import csv
+import os
 
-def keyword_search(mode: str, kword: str, num_entries: int):
+def keyword_search(mode: str, kword: str, num_entries: int, join: bool = True):
     with sync_playwright() as p:
     #-- Set up new browser and page --
         browser = p.chromium.launch(headless=False, args=[
@@ -83,6 +86,7 @@ def keyword_search(mode: str, kword: str, num_entries: int):
             total_videos = min(previous_count, MAX_VIDEOS)
             videos = page.locator("div.thumb.wc")
             extracted_data = []
+            users = []
 
             for i in range(total_videos):
                 video = videos.nth(i)
@@ -139,13 +143,16 @@ def keyword_search(mode: str, kword: str, num_entries: int):
                     print("video URL failed, URL does not exist.")
                 
                 extracted_data.append({"video_url": overlay_link,
-                    "username": username,
-                    "caption": caption,
+                    "Username": username,
+                    "Video Caption": caption,
                     "time_posted": time_posted,
-                    "views": views,
-                    "likes": likes,
-                    "comments": comments})
+                    "Video Views": views,
+                    "Video Likes": likes,
+                    "Video Comments": comments})
                 
+                if username not in users:
+                    users.append(username)
+
         #-- Save to CSV --
             if not extracted_data:
                 print("No data extracted. CSV not created.")
@@ -164,3 +171,27 @@ def keyword_search(mode: str, kword: str, num_entries: int):
         
         finally:
             browser.close()
+    #-- Pass users to user_scrapper --      
+    bulk_user_search(users, kword, True)
+
+    if (join):
+        try:
+            df1 = pd.read_csv(f"{kword}_videos_{mode}_mode.csv")
+            df2 = pd.read_csv(f"{kword}_users.csv")
+
+            combined_df = pd.merge(df1, df2, on='Username', how='left')
+            combined_df.to_csv(f"{kword}_videos_and_users.csv", index=False)
+
+            #delete individual CSVs after merge
+            df1_path = f"{kword}_videos_{mode}_mode.csv"
+            df2_path = f"{kword}_users.csv"
+
+            # Check if file exists before deleting to avoid errors
+            if os.path.exists(df1_path) and os.path.exists(df2_path):
+                os.remove(df1_path)
+                os.remove(df2_path)
+                print(f"{df1_path} and {df2_path} have been deleted.")
+            else:
+                print("The file does not exist.")
+        except:
+            print("Could not merge CSVs. Closing program.")
